@@ -1,0 +1,135 @@
+import React, { useState, useEffect } from "react";
+import "./Crypto.css";
+import axios from "axios";
+import { Pagination } from "@mui/material";
+const CryptoData = () => {
+  const [bitdata, setBitdata] = useState([]);
+  const [showDetails, setShowDetails] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
+  const toggleDetails = () => {
+    setShowDetails(!showDetails);
+  };
+
+  useEffect(() => {
+    const FetchBitCoin = async () => {
+      try {
+        const response = await axios.get("http://localhost:1010/api/bitcoin");
+        console.log("this is bitdata", response.data.coins);
+        setBitdata(response.data.coins);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    FetchBitCoin();
+  }, []);
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+  return (
+    <div>
+      <h2>Bitcoin Information</h2>
+
+      <input
+        style={{ width: "20%" }}
+        type="text"
+        value={searchTerm}
+        onChange={handleSearch}
+        placeholder="Search coins..."
+      />
+
+      <div
+        className="bitcoin-cards-container"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          alignItems: "center",
+          alignContent: "space-between",
+          marginTop: "50px",
+        }}
+      >
+        {bitdata.length > 0 ? (
+          bitdata
+            .filter((coin) =>
+              coin.name.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage) // Slice the array based on the current page number
+            .map((coin) => (
+              <div
+                style={{ marginTop: "20px" }}
+                className={`crypto-card ${showDetails ? "show-details" : ""}`}
+              >
+                <div className="crypto-card-content">
+                  <div className="crypto-info">
+                    <h2> Name</h2>
+                    <p>{coin.name}</p>
+                  </div>
+                  <div>
+                    <h2>Price</h2>
+                    <p> {coin.price}</p>
+                  </div>
+                  <div>
+                    <h2>Symbol</h2>
+                    {coin.symbol}{" "}
+                  </div>
+                  <div>
+                    <h2>Market Cap</h2>
+                    <p> {coin.marketCap}</p>
+                  </div>
+                </div>
+                <button className="view-details-btn" onClick={toggleDetails}>
+                  View Details
+                </button>
+                {showDetails && (
+                  <div style={{ display: "flex" }}>
+                    <div className="details">
+                      <div>
+                        <p>Rank: {coin.rank}</p>
+                      </div>
+                      <div>
+                        <p>Available Supply:{coin.availableSupply}</p>
+                      </div>
+                      <div>
+                        <p>Total Supply: {coin.totalSupply}</p>
+                      </div>
+                      <div>
+                        <a href={coin.websiteUrl}>
+                          Click here for more details
+                        </a>
+                      </div>
+                    </div>
+                    <div
+                      className="bit-image"
+                      style={{ marginLeft: "250px", marginTop: "50px" }}
+                    >
+                      <img src={coin.icon} alt="" className="coinimg" />
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))
+        ) : (
+          <div>Loading...</div>
+        )}
+      </div>
+      <Pagination
+        style={{ marginLeft: "600px", marginTop: "20px" }}
+        count={Math.ceil(
+          bitdata.filter((coin) =>
+            coin.name.toLowerCase().includes(searchTerm.toLowerCase())
+          ).length / itemsPerPage
+        )}
+        page={currentPage}
+        onChange={handleChangePage}
+      />
+    </div>
+  );
+};
+
+export default CryptoData;

@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat&family=Chakra+Petch:ital,wght@1,300&family=Lato:ital,wght@1,700&family=Lobster&family=M+PLUS+1p:wght@100&family=Montserrat&family=Playfair+Display+SC:ital,wght@1,700&family=Raleway:wght@100&display=swap");
+.crypto-card {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 800px; /* Set a maximum width if needed */
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+  padding: 50px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.crypto-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view-details-btn {
+  background-color: red;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  align-self: flex-end;
+  border-radius: 20px;
+  width: 150px;
+}
+
+.view-details-btn:hover {
+  background-color: #0056b3;
+}
+
+.details {
+  display: none;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.crypto-card.show-details .details {
+  display: block;
+}
+.coinimg {
+  height: 100px;
+  width: 100px;
+}
+.bitcoin-search {
+  height: 40px;
+  border-radius: 15px;
+}
+@media (min-width: 768px) {
+  .bit-image img {
+    margin-left: 350%;
+  }
+}
+@media (min-width: 768px) {
+  .pagination {
+    margin-left: 40%;
+  }
+}
+.bit-details {
+  font-family: "Chakra Petch", sans-serif;
+  font-weight: 800;
+}
+
+input::placeholder {
+  font-family: "Chakra Petch", sans-serif;
+}
+.crypto-card:hover {
+  transform: scale(1.1);
+  transition: transform 1s;
+}
+
+@media (max-width: 767px) {
+  .crypto-card-content {
+    flex-direction: column;
+  }
+}
+@media (max-width: 767px) {
+  .bitcoin-search {
+    width: 350px;
+  }
+}
+.bitcoin-search {
+  width: 350px;
+}
